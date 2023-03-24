@@ -1,0 +1,58 @@
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cow ID</th>
+                <th>Animal ID</th>
+                <th>Type</th>
+                <th>Days in Lactation</th>
+                <th>Lactation Number</th>
+                <th>Age in Days</th>
+                <th>Start Date Time</th>
+                <th>End Date</th>
+                <th>Min Value Date Time</th>
+                <th>Reporting Date Time</th>
+                <th>Health Index</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let row of data.result; let i = index">
+                <ng-container *ngIf="i !== selectedIndex; else templateA">
+                    <td>{{row.eventId}}</td>
+                    <td>{{row.cowId}}</td>
+                    <td>{{row.animalId}}</td>
+                    <td>{{row.type}}</td>
+                    <td>{{row.daysInLactation}}</td>
+                    <td>{{row.lactationNumber}}</td>
+                    <td>{{row.ageInDays}}</td>
+                    <td>{{row.startDateTime}}</td>
+                    <td>{{row.endDate}}</td>
+                    <td>{{row.minValueDateTime}}</td>
+                    <td>{{row.reportingDateTime}}</td>
+                    <td>{{row.healthIndex}}</td>
+                </ng-container>
+                <ng-template #templateA>
+                    <td>{{row.eventId}}</td>
+                    <td><input [(ngModel)]="row.cowId"/></td>
+                    <td><input [(ngModel)]="row.animalId"/></td>
+                    <td><input [(ngModel)]="row.type"/></td>
+                    <td><input [(ngModel)]="row.daysInLactation"/></td>
+                    <td><input [(ngModel)]="row.lactationNumber"/></td>
+                    <td><input [(ngModel)]="row.ageInDays"/></td>
+                    <td><input [(ngModel)]="row.startDateTime"/></td>
+                    <td><input [(ngModel)]="row.endDate"/></td>
+                    <td><input [(ngModel)]="row.minValueDateTime"/></td>
+                    <td><input [(ngModel)]="row.reportingDateTime"/></td>
+                    <td><input [(ngModel)]="row.healthIndex"/></td>
+                </ng-template>        
+                <td><button (click)="editRow(i)">Edit</button></td>
+                <td><button (click)="deleteRow(i)">Delete</button></td>
+            </tr>
+        </tbody>
+    </table>
+    <button (click)="addRow()">Add Row</button>
+    <button (click)="saveData()">Save data</button>   
+</div>
