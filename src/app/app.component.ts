@@ -6,7 +6,7 @@ import { DataService } from './services/data.service';
 
 import {
   HealthData,
-  HealthItem
+  HealthEventItem
 } from './types';
 
 @Component({
@@ -17,6 +17,7 @@ import {
 export class AppComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = []
   selectedIndex: number = -1;
+  maxId: number = 0;
 
   data: HealthData = {
     offset: 0,
@@ -47,7 +48,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   addRow() {
-    this.data.result.push(<HealthItem>{});
+    this.maxId++;
+    this.data.result.push(<HealthEventItem>{eventId: this.maxId});
   }
 
   getData() {
@@ -55,6 +57,9 @@ export class AppComponent implements OnInit, OnDestroy {
       this.dataService.getData().subscribe(
         (res) => {
           this.data = res as HealthData;
+          res.result.forEach((item: HealthEventItem)=>{
+            if(item.eventId > this.maxId) this.maxId = item.eventId;
+          });
         },
         err => {
           console.error(err);

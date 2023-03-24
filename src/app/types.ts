@@ -1,11 +1,11 @@
-export type HealthItem = {
-    healthIndex: number;
+export type HealthEventItem = {
+    eventId: number;
+    healthIndex?: string;
     endDate?: string;
     minValueDateTime?: string;
     type?: string;
     cowId?: string;
     animalId?: string;
-    eventId?: string;
     deletable?: string;
     lactationNumber?: string;
     daysInLactation?: string;
@@ -18,5 +18,5 @@ export type HealthData = {
     offset: number;
     limit: number;
     total: number;
-    result: Array<HealthItem>;
+    result: Array<HealthEventItem>;
 }

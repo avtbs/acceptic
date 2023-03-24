@@ -5,8 +5,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { HttpInterceptorService } from './services/http-interceptor.service';
-import { StorageService } from './services/storage.service';
-import { DataService } from './services/data.service';
 
 @NgModule({
   declarations: [
