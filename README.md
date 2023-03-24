@@ -1,7 +1,7 @@
-#Client-Side Developer Exam
+Client-Side Developer Exam
 =================================
-###The following project must be in Angular 2 CLI environment or above 
-=================================
+The following project must be in Angular 2 CLI environment or above 
+---------------------------------
 1. At your current project – you need to create web application that presents
 the grid table with data provided in JSON below.
 When field value not exist – present empty cell in table.
