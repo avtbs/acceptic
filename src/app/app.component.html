@@ -33,6 +33,8 @@
                     <td>{{row.minValueDateTime}}</td>
                     <td>{{row.reportingDateTime}}</td>
                     <td>{{row.healthIndex}}</td>
+                    <td><button (click)="switchToEditRow(i)">Edit</button></td>
+                    <td><button (click)="deleteRow(i)">Delete</button></td>
                 </ng-container>
                 <ng-template #templateA>
                     <td>{{row.eventId}}</td>
@@ -47,12 +49,27 @@
                     <td><input [(ngModel)]="row.minValueDateTime"/></td>
                     <td><input [(ngModel)]="row.reportingDateTime"/></td>
                     <td><input [(ngModel)]="row.healthIndex"/></td>
-                </ng-template>        
-                <td><button (click)="editRow(i)">Edit</button></td>
-                <td><button (click)="deleteRow(i)">Delete</button></td>
+                    <td><button (click)="saveEditingRow(i)">Save</button></td>
+                    <td><button (click)="skipEditingRow(i)">Skip</button></td>
+                </ng-template>       
+            </tr>
+            <tr *ngIf="newRow">
+                <td>{{newRow.eventId}}</td>
+                <td><input [(ngModel)]="newRow.cowId"/></td>
+                <td><input [(ngModel)]="newRow.animalId"/></td>
+                <td><input [(ngModel)]="newRow.type"/></td>
+                <td><input [(ngModel)]="newRow.daysInLactation"/></td>
+                <td><input [(ngModel)]="newRow.lactationNumber"/></td>
+                <td><input [(ngModel)]="newRow.ageInDays"/></td>
+                <td><input [(ngModel)]="newRow.startDateTime"/></td>
+                <td><input [(ngModel)]="newRow.endDate"/></td>
+                <td><input [(ngModel)]="newRow.minValueDateTime"/></td>
+                <td><input [(ngModel)]="newRow.reportingDateTime"/></td>
+                <td><input [(ngModel)]="newRow.healthIndex"/></td>
+                <td><button (click)="saveNewRow()">Save</button></td>
+                <td><button (click)="skipSavingNewRow()">Skip</button></td>
             </tr>
         </tbody>
     </table>
-    <button (click)="addRow()">Add Row</button>
-    <button (click)="saveData()">Save data</button>   
+    <button (click)="addRow()" *ngIf="!newRow">Add Row</button>
 </div>

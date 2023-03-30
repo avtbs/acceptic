@@ -26,6 +26,8 @@ export class AppComponent implements OnInit, OnDestroy {
     result: []
   };
 
+  newRow: HealthEventItem | null = null;
+
   constructor(private dataService: DataService) {}
 
   ngOnInit(){
@@ -36,20 +38,91 @@ export class AppComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe())
   }
 
-  editRow(index: number) {
-    this.selectedIndex = this.selectedIndex !== index ? index : -1;
+  switchToEditRow(index: number) {
+    if (this.selectedIndex !== -1){
+      this.skipEditingRow(this.selectedIndex, index);
+    } else {
+      this.selectedIndex = index;
+    }
+  }
+
+  saveEditingRow(index: number) {
+    const item = this.data.result[index];
+    this.subscriptions.push(
+      this.dataService.updateItem(item.eventId, item).subscribe(
+        (res) => {
+          this.selectedIndex = -1;
+        },
+        err => {
+          console.error(err);
+        }
+      )
+    );
+  }
+
+  skipEditingRow(index: number, newIndex: number = -1) {
+    if (this.selectedIndex !== -1){
+      this.subscriptions.push(
+        this.dataService.getData().subscribe(
+          (res) => {
+            const item = (res as HealthData).result.find((item) => 
+              item.eventId === this.data.result[index].eventId
+            )
+            if (item) {
+              this.data.result[index] = item;
+              this.selectedIndex = newIndex;
+            }
+          },
+          err => {
+            console.error(err);
+          }
+        )
+      );
+    }    
   }
   
   deleteRow(index: number) {
-    if(this.selectedIndex === index) {
-      this.selectedIndex = -1;
-    }
-    this.data.result.splice(index, 1);
+    this.subscriptions.push(
+      this.dataService.removeItem(this.data.result[index].eventId).subscribe(
+        (res) => {
+          if(this.selectedIndex === index) {
+            this.selectedIndex = -1;
+          }
+          this.data.result.splice(index, 1);
+        },
+        err => {
+          console.error(err);
+        }
+      )
+    );
   }
 
   addRow() {
     this.maxId++;
-    this.data.result.push(<HealthEventItem>{eventId: this.maxId});
+    this.newRow = <HealthEventItem>{eventId: this.maxId}
+  }
+
+  saveNewRow(){
+    if(this.newRow){
+      this.subscriptions.push(
+        this.dataService.addItem(this.newRow).subscribe(
+          (res) => {
+            if(this.newRow){
+              this.data.result.push(this.newRow);
+              this.newRow = null;
+            }
+          },
+          err => {
+            console.error(err);
+          }
+        )
+      );
+    }
+  }
+
+  skipSavingNewRow () {
+    this.maxId--;
+    this.newRow = null;
   }
 
   getData() {
@@ -60,19 +133,6 @@ export class AppComponent implements OnInit, OnDestroy {
           res.result.forEach((item: HealthEventItem)=>{
             if(item.eventId > this.maxId) this.maxId = item.eventId;
           });
-        },
-        err => {
-          console.error(err);
-        }
-      )
-    );
-  }
-
-  saveData() {
-    this.subscriptions.push(
-      this.dataService.setData(this.data).subscribe(
-        (res) => {
-          alert('Data successfuly saved!')
         },
         err => {
           console.error(err);
