@@ -11,7 +11,7 @@ import { Observable, of } from 'rxjs';
 import { StorageService } from './storage.service';
 import { HealthData, HealthEventItem } from '../types';
 
-import response from './response';
+import response from './response.json';
 
 @Injectable()
 export class HttpInterceptorService implements HttpInterceptor {
