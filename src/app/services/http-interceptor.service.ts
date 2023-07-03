@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { 
+import {
     HttpInterceptor,
     HttpHandler,
-    HttpEvent, 
+    HttpEvent,
     HttpRequest,
     HttpResponse,
 } from '@angular/common/http';
@@ -46,7 +46,7 @@ export class HttpInterceptorService implements HttpInterceptor {
                 .filter((item: HealthEventItem) => item.eventId !== itemId);
             responseFromStorage.total = responseFromStorage.result.length;
             this.storageService.set('response', responseFromStorage);
-            
+
             return of(new HttpResponse({
                 status: 200,
             }));
@@ -55,7 +55,7 @@ export class HttpInterceptorService implements HttpInterceptor {
 
         if (req.method === 'PUT') {
             const itemId = +(req.params.get('itemId') || -1);
-            
+
             responseFromStorage.result = responseFromStorage.result
                 .map((item: HealthEventItem) => {
                     if(item.eventId === itemId) {
@@ -65,14 +65,15 @@ export class HttpInterceptorService implements HttpInterceptor {
                 });
             responseFromStorage.total = responseFromStorage.result.length;
             this.storageService.set('response', responseFromStorage);
-            
+
             return of(new HttpResponse({
                 status: 200,
-            }));  
+            }));
         }
- 
+
         return of(new HttpResponse({
             status: 404,
-        }));  
+        }));
+        //one more example
     }
 }

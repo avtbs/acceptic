@@ -19,6 +19,7 @@ export interface IStorageService extends StorageGetters, StorageSetters, Storage
     get:(key: string) => any;
     set:(key: string, value: any) => void;
     remove:(key: string) => void;
+    // it's just a test
 }
 
 @Injectable({
@@ -34,7 +35,7 @@ export class StorageService{
             (this as any)[`remove${enumMember}`] = () => { this.remove(StorageKeys[key]); };
         }
     }
-        
+
     public get(key: string): any{
         const val = this.storage.getItem(key) || this.storage[key];
         return val ? JSON.parse(val) : null;
